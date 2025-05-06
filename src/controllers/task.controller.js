@@ -10,6 +10,21 @@ exports.getAllTask = async(req, res) => {
     }
 };
 
+exports.updateTask = async(req, res) => {
+    try {
+        const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+        if (!task){
+            return res.status(404).json({ message: "Tarea no encontrada, no se puede actualizar" })
+        }
+        res.status(201).json(task);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error no se logro obtener las tareas ❌' })
+    }
+}
+
 exports.createTask = async(req, res) => {
     try {
         const task = new Task(req.body);
